@@ -178,5 +178,24 @@
     "image": "https://images.unsplash.com/photo-1599420186946-7b6fb4e297f0?w=400",
     "description": "LED强光头灯，USB充电，感应开关，解放双手户外必备。",
     "sku": "OUT-008"
+  },
+  {
+    "id": 21,
+    "name": "武款机械机芯手表",
+    "price": 999,
+    "category": "手表",
+    "sku": "1123品牌",
+    "images": [
+      "https://cch18000.github.io/shop/images/img_1787229046594_j2jcsp.jpg",
+      "https://cch18000.github.io/shop/images/img_1787229049712_s5pj0f.jpg",
+      "https://cch18000.github.io/shop/images/img_1787229052522_js8v07.jpg",
+      "https://cch18000.github.io/shop/images/img_1787229055110_x4cguz.jpg",
+      "https://cch18000.github.io/shop/images/img_1787229058353_s7fzi6.jpg",
+      "https://cch18000.github.io/shop/images/img_1787229060909_othudc.jpg",
+      "https://cch18000.github.io/shop/images/img_1787229063560_w9t6h8.jpg",
+      "https://cch18000.github.io/shop/images/img_1787229066363_uw80pn.jpg",
+      "https://cch18000.github.io/shop/images/img_1787229069669_uw6co9.jpg"
+    ],
+    "description": "【1123品牌W款机械表】原装进口西铁城机械机芯，走时基本无误差，蓝宝石玻璃镜面，精钢表壳表带，50米深度防水，304精钢蝴蝶扣，皮带钢带两款可选🌲"
   }
 ]
