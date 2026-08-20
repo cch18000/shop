@@ -28,6 +28,20 @@
   .search-clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:24px;height:24px;border-radius:50%;background:#cbd5e1;color:#fff;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .15s}
   .search-clear.show{opacity:1;pointer-events:auto}
   .hot-section{padding:12px 16px 4px}
+  .tip-banner{margin:10px 16px 0;padding:10px 14px;background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);border-radius:10px;display:flex;align-items:center;gap:8px;cursor:pointer;border:1px solid #fcd34d;transition:all .15s}
+  .tip-banner:active{transform:scale(0.98)}
+  .tip-icon{font-size:18px;flex-shrink:0}
+  .tip-text{flex:1;font-size:12px;color:#92400e;font-weight:500;line-height:1.4}
+  .tip-arrow{font-size:18px;color:#92400e;flex-shrink:0;font-weight:bold}
+  .tip-method{margin-bottom:20px;}
+  .tip-method:last-child{margin-bottom:0;}
+  .tip-method-title{font-size:14px;font-weight:600;color:#0f172a;margin-bottom:6px;}
+  .tip-method-desc{font-size:12px;color:#64748b;margin-bottom:10px;line-height:1.5;}
+  .tip-steps{background:#f8fafc;border-radius:8px;padding:10px;border:1px solid #e2e8f0;}
+  .tip-step{display:flex;gap:8px;margin-bottom:8px;align-items:flex-start;}
+  .tip-step:last-child{margin-bottom:0;}
+  .tip-step-num{width:20px;height:20px;border-radius:50%;background:#1e3a5f;color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .tip-step span:last-child{font-size:12px;color:#334155;line-height:1.5;flex:1;}
   .hot-label{font-size:12px;color:#64748b;margin-bottom:8px;font-weight:500}
   .hot-tags{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none}
   .hot-tags::-webkit-scrollbar{display:none}
@@ -215,6 +229,11 @@
         <button class="search-clear" id="searchClear"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
       </div>
     </div>
+    <div class="tip-banner" onclick="showTipDialog()">
+      <span class="tip-icon">📱</span>
+      <span class="tip-text">防止闪退：添加到桌面/微信收藏，下次直接进入</span>
+      <span class="tip-arrow">›</span>
+    </div>
     <div class="hot-section" id="hotSection"><div class="hot-label">🔥 热门搜索</div><div class="hot-tags" id="hotTags"></div></div>
     <div class="category-tabs" id="categoryTabs"></div>
     <div id="recommendSection"><div class="section-title">全部商品</div></div>
@@ -378,6 +397,39 @@
         </div>
       </div>
       <div class="dialog-footer"><button class="btn btn-primary" style="width:100%;" onclick="closeDialog('serviceDialog')">我知道了</button></div>
+    </div>
+  </div>
+
+  <!-- 防闪退教程弹窗 -->
+  <div class="dialog-mask" id="tipDialog">
+    <div class="dialog" style="max-width:400px;">
+      <div class="dialog-header">
+        <div class="dialog-title-row">
+          <div class="dialog-icon" style="font-size:20px;">📱</div>
+          <div><div class="dialog-title">防止闪退教程</div><div class="dialog-subtitle">两种方法，下次直接进入</div></div>
+        </div>
+      </div>
+      <div class="dialog-body">
+        <div class="tip-method">
+          <div class="tip-method-title">✅ 方法一：添加到手机桌面（推荐）</div>
+          <div class="tip-method-desc">添加后桌面出现图标，点一下就进，跟APP一样，完全没有左滑闪退问题</div>
+          <div class="tip-steps">
+            <div class="tip-step"><span class="tip-step-num">1</span><span><strong>iPhone：</strong>Safari打开本页 → 点底部分享按钮 →「添加到主屏幕」</span></div>
+            <div class="tip-step"><span class="tip-step-num">2</span><span><strong>安卓：</strong>浏览器打开本页 → 点菜单 →「添加到桌面」</span></div>
+          </div>
+        </div>
+        <div class="tip-method">
+          <div class="tip-method-title">⭐ 方法二：微信收藏</div>
+          <div class="tip-method-desc">收藏后下次从微信收藏里直接打开，不用重新扫码</div>
+          <div class="tip-steps">
+            <div class="tip-step"><span class="tip-step-num">1</span><span>点右上角「...」→ 选择「收藏」</span></div>
+            <div class="tip-step"><span class="tip-step-num">2</span><span>下次进入：微信「我」→「收藏」→ 点开本页</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="dialog-footer">
+        <button class="btn btn-primary" style="width:100%;" onclick="closeDialog('tipDialog')">我知道了</button>
+      </div>
     </div>
   </div>
 
@@ -756,6 +808,10 @@ function removeFromCart(id) {
 // ==================== 客服弹窗 ====================
 function showServiceDialog() {
   document.getElementById('serviceDialog').classList.add('show');
+}
+
+function showTipDialog() {
+  document.getElementById('tipDialog').classList.add('show');
 }
 
 function closeDialog(id) {
