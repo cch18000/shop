@@ -726,9 +726,8 @@ function closeDialog(id) {
 document.querySelectorAll('.dialog-mask').forEach(mask => {
   mask.addEventListener('click', e => {
     if (e.target === mask) {
-      // 上传图片中禁止点击遮罩关闭商品编辑弹窗
-      if (mask.id === 'productFormDialog' && isUploading) {
-        showToast('图片正在上传中，请稍候...', 'error');
+      // 商品编辑弹窗点击外部不关闭，防止填写内容丢失
+      if (mask.id === 'productFormDialog') {
         return;
       }
       mask.classList.remove('show');
