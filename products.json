@@ -81,15 +81,6 @@
     "sku": "FOOD-001"
   },
   {
-    "id": 14,
-    "name": "功能饮料",
-    "price": 6,
-    "category": "食品饮料",
-    "image": "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=400",
-    "description": "运动功能饮料，补充电解质，快速恢复体力。",
-    "sku": "FOOD-002"
-  },
-  {
     "id": 15,
     "name": "自热米饭",
     "price": 25,
