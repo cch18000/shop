@@ -1,14 +1,5 @@
 [
   {
-    "id": 11,
-    "name": "战术钱包",
-    "price": 89,
-    "category": "工具配件",
-    "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400",
-    "description": "RFID防盗刷战术钱包，碳纤维材质，轻薄大容量。",
-    "sku": "TOOL-003"
-  },
-  {
     "id": 12,
     "name": "户外水壶",
     "price": 49,
