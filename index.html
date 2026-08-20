@@ -72,9 +72,10 @@
   .empty-title{font-size:15px;color:#475569;margin-bottom:4px;font-weight:500}
   .empty-desc{font-size:13px;color:#94a3b8;margin-bottom:16px}
   .empty-btn{padding:8px 20px;background:#1e3a5f;color:#fff;border-radius:20px;font-size:13px;font-weight:500}
-  .detail-img-wrap{width:100%;background:#fff;position:relative}
-  .detail-img-wrap img{width:100%;height:auto;display:block}
-  .detail-images{width:100%;background:#fff;}
+  .detail-main-image{width:100%;background:#fff;position:relative;}
+  .detail-main-image img{width:100%;height:auto;display:block;}
+  .detail-more-images{width:100%;background:#fff;padding:12px 0;border-top:8px solid #f1f5f9;}
+  .detail-more-title{padding:0 16px 12px;font-size:14px;font-weight:600;color:#0f172a;}
   .detail-image-item{width:100%;position:relative;}
   .detail-image-item img{width:100%;height:auto;display:block;}
   .detail-image-badge{position:absolute;top:12px;left:12px;padding:4px 10px;background:rgba(0,0,0,0.6);color:#fff;border-radius:12px;font-size:11px;z-index:2;}
@@ -693,14 +694,9 @@ function showDetail(id) {
   currentProduct = p;
   const imgs = getImages(p);
   document.getElementById('detailContent').innerHTML = `
-    <div class="detail-images">
-      ${imgs.map((img, i) => `
-        <div class="detail-image-item">
-          ${i === 0 ? `<span class="detail-category-badge">${p.category}</span>` : ''}
-          ${i > 0 ? `<span class="detail-image-badge">详情图 ${i}</span>` : ''}
-          <img src="${img}" alt="${p.name}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23e2e8f0%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%2394a3b8%22 font-size=%2212%22>图片</text></svg>'" />
-        </div>
-      `).join('')}
+    <div class="detail-main-image">
+      <span class="detail-category-badge">${p.category}</span>
+      <img src="${imgs[0]}" alt="${p.name}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23e2e8f0%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%2394a3b8%22 font-size=%2212%22>图片</text></svg>'" />
     </div>
     <div class="detail-info">
       <div class="detail-price">
@@ -721,6 +717,17 @@ function showDetail(id) {
         <button class="copy-sku-btn" onclick="copyText('${p.sku}','编号已复制')">复制</button>
       </div>` : ''}
     </div>
+    ${imgs.length > 1 ? `
+    <div class="detail-more-images">
+      <div class="detail-more-title">商品详情图（${Math.min(imgs.length - 1, 20)}张）</div>
+      ${imgs.slice(1, 21).map((img, i) => `
+        <div class="detail-image-item">
+          <span class="detail-image-badge">详情图 ${i + 1}</span>
+          <img src="${img}" alt="${p.name} 详情图${i + 1}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23e2e8f0%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%2394a3b8%22 font-size=%2212%22>图片</text></svg>'" />
+        </div>
+      `).join('')}
+    </div>
+    ` : ''}
   `;
   navigate('detail');
 }
