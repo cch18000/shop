@@ -59,7 +59,7 @@
   .empty-btn{padding:8px 20px;background:#1e3a5f;color:#fff;border-radius:20px;font-size:13px;font-weight:500}
   .detail-img-wrap{width:100%;aspect-ratio:1/1;background:#fff;position:relative;overflow:hidden}
   .detail-img-wrap img{width:100%;height:100%;object-fit:cover}
-  .detail-swiper{width:100%;height:100%;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .detail-swiper{width:100%;height:100%;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;touch-action:pan-x}
   .detail-swiper::-webkit-scrollbar{display:none}
   .detail-swiper-item{flex:0 0 100%;scroll-snap-align:start;position:relative}
   .detail-swiper-item img{width:100%;height:100%;object-fit:cover}
@@ -662,31 +662,11 @@ function showDetail(id) {
     const dots = document.querySelectorAll('.swiper-dot');
     const count = document.querySelector('.swiper-count');
     if (swiper) {
-      // 滚动更新指示器
       swiper.addEventListener('scroll', () => {
         const idx = Math.round(swiper.scrollLeft / swiper.offsetWidth);
         dots.forEach((d, i) => d.classList.toggle('active', i === idx));
         if (count) count.textContent = `${idx+1}/${dots.length}`;
       });
-      // 防止手机浏览器左右滑动后退手势
-      let startX = 0, startY = 0, lastX = 0, isHorizontal = false;
-      swiper.addEventListener('touchstart', (e) => {
-        startX = lastX = e.touches[0].clientX;
-        startY = e.touches[0].clientY;
-        isHorizontal = false;
-      }, { passive: true });
-      swiper.addEventListener('touchmove', (e) => {
-        const curX = e.touches[0].clientX;
-        const deltaX = curX - lastX;
-        lastX = curX;
-        const totalX = curX - startX;
-        const totalY = e.touches[0].clientY - startY;
-        if (Math.abs(totalX) > Math.abs(totalY) && Math.abs(totalX) > 5) isHorizontal = true;
-        if (isHorizontal) {
-          e.preventDefault();
-          swiper.scrollLeft -= deltaX;
-        }
-      }, { passive: false });
     }
   }, 100);
 }
