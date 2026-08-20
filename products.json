@@ -1,14 +1,5 @@
 [
   {
-    "id": 2,
-    "name": "军迷战术手套",
-    "price": 59,
-    "category": "户外装备",
-    "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
-    "description": "防滑耐磨战术手套，触屏指尖设计，保护双手同时不影响操作。",
-    "sku": "OUT-002"
-  },
-  {
     "id": 3,
     "name": "户外保温杯",
     "price": 89,
