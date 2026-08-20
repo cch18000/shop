@@ -1,14 +1,5 @@
 [
   {
-    "id": 1,
-    "name": "战术户外背包",
-    "price": 199,
-    "category": "户外装备",
-    "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400",
-    "description": "大容量战术背包，防水耐磨，多隔层设计，适合户外探险和日常通勤。",
-    "sku": "OUT-001"
-  },
-  {
     "id": 2,
     "name": "军迷战术手套",
     "price": 59,
