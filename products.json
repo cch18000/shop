@@ -1,14 +1,5 @@
 [
   {
-    "id": 7,
-    "name": "户外登山靴",
-    "price": 399,
-    "category": "服装鞋帽",
-    "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
-    "description": "高帮登山靴，防水防滑，减震舒适，适合各种复杂地形。",
-    "sku": "CLO-003"
-  },
-  {
     "id": 8,
     "name": "棒球帽",
     "price": 39,
