@@ -1,14 +1,5 @@
 [
   {
-    "id": 8,
-    "name": "棒球帽",
-    "price": 39,
-    "category": "服装鞋帽",
-    "image": "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=400",
-    "description": "棉质棒球帽，可调节大小，遮阳防晒，日常百搭。",
-    "sku": "CLO-004"
-  },
-  {
     "id": 9,
     "name": "多功能工具钳",
     "price": 159,
