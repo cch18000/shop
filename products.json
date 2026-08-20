@@ -1,14 +1,5 @@
 [
   {
-    "id": 3,
-    "name": "户外保温杯",
-    "price": 89,
-    "category": "户外装备",
-    "image": "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=400",
-    "description": "304不锈钢保温杯，24小时保温，大容量500ml，户外必备。",
-    "sku": "OUT-003"
-  },
-  {
     "id": 4,
     "name": "战术手电筒",
     "price": 129,
