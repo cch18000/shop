@@ -81,15 +81,6 @@
     "sku": "OUT-005"
   },
   {
-    "id": 18,
-    "name": "睡袋",
-    "price": 199,
-    "category": "户外装备",
-    "image": "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=400",
-    "description": "四季通用睡袋，舒适温度-5℃，填充保暖棉，便携收纳。",
-    "sku": "OUT-006"
-  },
-  {
     "id": 19,
     "name": "登山杖",
     "price": 89,
