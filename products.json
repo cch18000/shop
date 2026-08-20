@@ -1,14 +1,5 @@
 [
   {
-    "id": 19,
-    "name": "登山杖",
-    "price": 89,
-    "category": "户外装备",
-    "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400",
-    "description": "碳纤维登山杖，超轻可折叠，减震设计，保护膝盖。",
-    "sku": "OUT-007"
-  },
-  {
     "id": 20,
     "name": "头灯",
     "price": 79,
