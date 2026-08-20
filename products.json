@@ -1,14 +1,5 @@
 [
   {
-    "id": 12,
-    "name": "户外水壶",
-    "price": 49,
-    "category": "工具配件",
-    "image": "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=400",
-    "description": "运动户外水壶，Tritan材质，大容量750ml，便携防漏。",
-    "sku": "TOOL-004"
-  },
-  {
     "id": 17,
     "name": "户外帐篷",
     "price": 599,
