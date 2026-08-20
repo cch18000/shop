@@ -29,11 +29,11 @@
   .search-clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:24px;height:24px;border-radius:50%;background:#cbd5e1;color:#fff;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .15s}
   .search-clear.show{opacity:1;pointer-events:auto}
   .hot-section{padding:12px 16px 4px}
-  .tip-banner{margin:10px 16px 0;padding:10px 14px;background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);border-radius:10px;display:flex;align-items:center;gap:8px;cursor:pointer;border:1px solid #fcd34d;transition:all .15s}
+  .tip-banner{margin:10px 16px 0;padding:10px 14px;background:linear-gradient(135deg,#dbeafe 0%,#bfdbfe 100%);border-radius:10px;display:flex;align-items:center;gap:8px;cursor:pointer;border:1px solid #93c5fd;transition:all .15s}
   .tip-banner:active{transform:scale(0.98)}
   .tip-icon{font-size:18px;flex-shrink:0}
-  .tip-text{flex:1;font-size:12px;color:#92400e;font-weight:500;line-height:1.4}
-  .tip-arrow{font-size:18px;color:#92400e;flex-shrink:0;font-weight:bold}
+  .tip-text{flex:1;font-size:12px;color:#1e40af;font-weight:500;line-height:1.4}
+  .tip-arrow{font-size:18px;color:#1e40af;flex-shrink:0;font-weight:bold}
   .tip-method{margin-bottom:20px;}
   .tip-method:last-child{margin-bottom:0;}
   .tip-method-title{font-size:14px;font-weight:600;color:#0f172a;margin-bottom:6px;}
@@ -195,7 +195,12 @@
   .admin-action-btn{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;transition:all .15s}
   .admin-action-btn.edit{background:rgba(30,58,95,0.1);color:#1e3a5f}
   .admin-action-btn.delete{background:rgba(220,38,38,0.1);color:#dc2626}
+  .admin-action-btn.online{background:rgba(5,150,105,0.1);color:#059669;font-weight:bold;font-size:16px}
+  .admin-action-btn.offline{background:rgba(217,119,6,0.1);color:#d97706;font-weight:bold;font-size:16px}
   .admin-action-btn:active{transform:scale(0.9)}
+  .status-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600;margin-left:6px;vertical-align:middle}
+  .status-badge.online{background:rgba(5,150,105,0.1);color:#059669}
+  .status-badge.offline{background:rgba(217,119,6,0.1);color:#d97706}
   .admin-fab{position:fixed;bottom:80px;right:calc(50% - 240px + 16px);width:52px;height:52px;border-radius:50%;background:#1e3a5f;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(30,58,95,0.3);z-index:40;transition:transform .15s}
   .admin-fab:active{transform:scale(0.92)}
   @media(max-width:480px){.admin-fab{right:16px}}
@@ -228,9 +233,9 @@
         <button class="search-clear" id="searchClear"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
       </div>
     </div>
-    <div class="tip-banner" onclick="showTipDialog()">
-      <span class="tip-icon">📱</span>
-      <span class="tip-text">防止闪退：添加到桌面/微信收藏，下次直接进入</span>
+    <div class="tip-banner" id="noticeBanner" onclick="showNoticeEdit()">
+      <span class="tip-icon">📢</span>
+      <span class="tip-text" id="noticeText">加载中...</span>
       <span class="tip-arrow">›</span>
     </div>
     <div class="hot-section" id="hotSection"><div class="hot-label">🔥 热门搜索</div><div class="hot-tags" id="hotTags"></div></div>
@@ -436,6 +441,31 @@
     </div>
   </div>
 
+  <!-- 公告编辑弹窗 -->
+  <div class="dialog-mask" id="noticeEditDialog">
+    <div class="dialog" style="max-width:360px;">
+      <div class="dialog-header">
+        <div class="dialog-title-row">
+          <div class="dialog-icon" style="font-size:20px;">📢</div>
+          <div><div class="dialog-title">编辑公告</div><div class="dialog-subtitle">修改首页公告栏内容</div></div>
+        </div>
+      </div>
+      <div class="dialog-body">
+        <div class="form-group">
+          <label class="form-label">公告内容</label>
+          <textarea class="form-textarea" id="noticeInput" placeholder="请输入公告内容..." rows="3"></textarea>
+        </div>
+        <div class="config-hint">公告会显示在首页顶部，客户打开就能看到。修改后1-2分钟同步生效。</div>
+      </div>
+      <div class="dialog-footer">
+        <div class="btn-row">
+          <button class="btn btn-secondary" onclick="closeDialog('noticeEditDialog')">取消</button>
+          <button class="btn btn-primary" onclick="saveNotice()">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- 商品编辑弹窗 -->
   <div class="dialog-mask" id="productFormDialog">
     <div class="dialog">
@@ -521,6 +551,7 @@
 <script>
 // ==================== 全局状态 ====================
 let products = [];
+let siteConfig = { notice: '欢迎来到JR服务社商品查找系统' };
 let cart = JSON.parse(localStorage.getItem('jr_cart') || '[]');
 let currentProduct = null;
 let currentCategory = '全部';
@@ -538,6 +569,7 @@ const CUSTOMER_SERVICE = {
 
 // ==================== 初始化 ====================
 document.addEventListener('DOMContentLoaded', () => {
+  loadConfig();
   loadProducts();
   setupEventListeners();
   renderHotTags();
@@ -545,6 +577,18 @@ document.addEventListener('DOMContentLoaded', () => {
   renderCartBadge();
   loadAdminConfig();
 });
+
+function loadConfig() {
+  fetch('config.json')
+    .then(r => r.json())
+    .then(data => {
+      siteConfig = data;
+      document.getElementById('noticeText').textContent = data.notice || '欢迎光临';
+    })
+    .catch(() => {
+      document.getElementById('noticeText').textContent = siteConfig.notice;
+    });
+}
 
 function loadProducts() {
   showLoading('加载商品数据...');
@@ -623,7 +667,7 @@ function renderProducts() {
   const grid = document.getElementById('productGrid');
   const empty = document.getElementById('emptyState');
   const keyword = document.getElementById('searchInput').value.toLowerCase().trim();
-  let filtered = products;
+  let filtered = products.filter(p => !p.status || p.status === 'online');
   if (currentCategory !== '全部') filtered = filtered.filter(p => p.category === currentCategory);
   if (keyword) filtered = filtered.filter(p =>
     p.name.toLowerCase().includes(keyword) ||
@@ -825,6 +869,52 @@ function showTipDialog() {
   document.getElementById('tipDialog').classList.add('show');
 }
 
+function showNoticeEdit() {
+  document.getElementById('noticeInput').value = siteConfig.notice || '';
+  document.getElementById('noticeEditDialog').classList.add('show');
+}
+
+async function saveNotice() {
+  const notice = document.getElementById('noticeInput').value.trim();
+  if (!notice) {
+    showToast('请输入公告内容', 'error');
+    return;
+  }
+  if (!adminConfig) {
+    showToast('请先登录管理后台', 'error');
+    return;
+  }
+  showLoading('正在保存公告...');
+  try {
+    // 获取当前config.json的sha
+    const getRes = await fetch(`https://api.github.com/repos/${adminConfig.username}/${adminConfig.repo}/contents/config.json`, {
+      headers: { 'Authorization': `token ${adminConfig.token}`, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    let sha = null;
+    if (getRes.ok) {
+      const data = await getRes.json();
+      sha = data.sha;
+    }
+    // 更新config.json
+    const newConfig = { ...siteConfig, notice };
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(newConfig, null, 2))));
+    const putRes = await fetch(`https://api.github.com/repos/${adminConfig.username}/${adminConfig.repo}/contents/config.json`, {
+      method: 'PUT',
+      headers: { 'Authorization': `token ${adminConfig.token}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: `更新公告 - ${new Date().toLocaleString('zh-CN')}`, content, sha })
+    });
+    if (!putRes.ok) throw new Error('保存失败');
+    siteConfig = newConfig;
+    document.getElementById('noticeText').textContent = notice;
+    closeDialog('noticeEditDialog');
+    showToast('公告保存成功，1-2分钟后生效', 'success');
+  } catch(e) {
+    showToast('保存失败：' + e.message, 'error');
+  } finally {
+    hideLoading();
+  }
+}
+
 function copySiteLink() {
   const url = window.location.href;
   copyText(url, '链接已复制，去浏览器打开粘贴');
@@ -994,15 +1084,17 @@ function renderAdminProducts() {
   }
   list.innerHTML = filtered.map(p => {
     const adminImg = getImages(p)[0];
+    const isOffline = p.status === 'offline';
     return `
-    <div class="admin-product-item">
+    <div class="admin-product-item" style="${isOffline ? 'opacity:0.6;' : ''}">
       <div class="admin-product-img"><img src="${adminImg}" alt="${p.name}" onerror="this.style.display='none'" /></div>
       <div class="admin-product-info">
-        <div class="admin-product-name">${p.name}</div>
+        <div class="admin-product-name">${p.name} ${isOffline ? '<span class="status-badge offline">已下架</span>' : '<span class="status-badge online">上架中</span>'}</div>
         <div class="admin-product-meta">${p.category} · ${p.sku || '无编号'}</div>
       </div>
       <div class="admin-product-price">¥${p.price}</div>
       <div class="admin-product-actions">
+        <button class="admin-action-btn ${isOffline ? 'online' : 'offline'}" onclick="toggleProductStatus(${p.id})" title="${isOffline ? '上架' : '放入仓库'}">${isOffline ? '↑' : '↓'}</button>
         <button class="admin-action-btn edit" onclick="editProduct(${p.id})" title="编辑"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg></button>
         <button class="admin-action-btn delete" onclick="deleteProduct(${p.id})" title="删除"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>
       </div>
@@ -1168,10 +1260,21 @@ function saveProduct() {
     if (idx > -1) products[idx] = { ...products[idx], ...data };
   } else {
     const newId = products.length ? Math.max(...products.map(p => p.id)) + 1 : 1;
-    products.push({ id: newId, ...data });
+    products.push({ id: newId, status: 'online', ...data });
   }
   closeDialog('productFormDialog');
   syncToGithub();
+}
+
+function toggleProductStatus(id) {
+  const p = products.find(x => x.id === id);
+  if (!p) return;
+  const newStatus = p.status === 'offline' ? 'online' : 'offline';
+  const action = newStatus === 'offline' ? '放入仓库' : '上架';
+  showConfirm(action, `确定要${action}商品「${p.name}」吗？${newStatus === 'offline' ? '放入仓库后客户将看不到此商品。' : '上架后客户可以在小程序中看到此商品。'}`, () => {
+    p.status = newStatus;
+    syncToGithub();
+  });
 }
 
 function deleteProduct(id) {
