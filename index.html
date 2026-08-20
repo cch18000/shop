@@ -49,6 +49,7 @@
   .hot-tags::-webkit-scrollbar{display:none}
   .hot-tag{flex-shrink:0;padding:5px 12px;background:#e2e8f0;color:#475569;border-radius:20px;font-size:12px;transition:all .15s;white-space:nowrap}
   .hot-tag:active{background:#cbd5e1;transform:scale(0.96)}
+  .category-section{padding:12px 0 0}
   .category-tabs{display:flex;gap:8px;padding:0 16px 12px;overflow-x:auto;scrollbar-width:none}
   .category-tabs::-webkit-scrollbar{display:none}
   .tab-item{flex-shrink:0;padding:6px 16px;background:#e2e8f0;color:#475569;border-radius:20px;font-size:13px;font-weight:500;transition:all .2s;white-space:nowrap}
@@ -239,8 +240,10 @@
       <span class="tip-text" id="noticeText">加载中...</span>
       <span class="tip-arrow">›</span>
     </div>
-    <div class="hot-section" id="hotSection"><div class="hot-label">🔥 热门搜索</div><div class="hot-tags" id="hotTags"></div></div>
-    <div class="category-tabs" id="categoryTabs"></div>
+    <div class="category-section">
+      <div class="section-title" id="categoryTitle">商品分类</div>
+      <div class="category-tabs" id="categoryTabs"></div>
+    </div>
     <div id="recommendSection"><div class="section-title">全部商品</div></div>
     <div class="product-grid" id="productGrid"></div>
     <div id="emptyState" class="empty-state" style="display:none;">
@@ -453,10 +456,14 @@
       </div>
       <div class="dialog-body">
         <div class="form-group">
-          <label class="form-label">公告内容</label>
-          <textarea class="form-textarea" id="noticeInput" placeholder="请输入公告内容..." rows="3"></textarea>
+          <label class="form-label">首页公告内容</label>
+          <textarea class="form-textarea" id="noticeInput" placeholder="请输入公告内容..." rows="2"></textarea>
         </div>
-        <div class="config-hint">公告会显示在首页顶部，客户打开就能看到。修改后1-2分钟同步生效。</div>
+        <div class="form-group">
+          <label class="form-label">分类板块标题</label>
+          <input type="text" class="form-input" id="categoryTitleInput" placeholder="例如：商品分类" />
+        </div>
+        <div class="config-hint">公告会显示在首页顶部，分类标题显示在分类标签上方。修改后1-2分钟同步生效。</div>
       </div>
       <div class="dialog-footer">
         <div class="btn-row">
@@ -577,7 +584,6 @@ document.addEventListener('DOMContentLoaded', () => {
   loadConfig();
   loadProducts();
   setupEventListeners();
-  renderHotTags();
   renderCategoryTabs();
   renderCartBadge();
   loadAdminConfig();
@@ -589,6 +595,7 @@ function loadConfig() {
     .then(data => {
       siteConfig = data;
       document.getElementById('noticeText').textContent = data.notice || '欢迎光临';
+      document.getElementById('categoryTitle').textContent = data.categoryTitle || '商品分类';
     })
     .catch(() => {
       document.getElementById('noticeText').textContent = siteConfig.notice;
@@ -876,12 +883,17 @@ function showTipDialog() {
 }
 
 function showNoticeEdit() {
+  if (!adminConfig) {
+    return; // 客户点击公告栏不做任何操作
+  }
   document.getElementById('noticeInput').value = siteConfig.notice || '';
+  document.getElementById('categoryTitleInput').value = siteConfig.categoryTitle || '商品分类';
   document.getElementById('noticeEditDialog').classList.add('show');
 }
 
 async function saveNotice() {
   const notice = document.getElementById('noticeInput').value.trim();
+  const categoryTitle = document.getElementById('categoryTitleInput').value.trim() || '商品分类';
   if (!notice) {
     showToast('请输入公告内容', 'error');
     return;
@@ -890,7 +902,7 @@ async function saveNotice() {
     showToast('请先登录管理后台', 'error');
     return;
   }
-  showLoading('正在保存公告...');
+  showLoading('正在保存设置...');
   try {
     // 获取当前config.json的sha
     const getRes = await fetch(`https://api.github.com/repos/${adminConfig.username}/${adminConfig.repo}/contents/config.json`, {
@@ -902,18 +914,19 @@ async function saveNotice() {
       sha = data.sha;
     }
     // 更新config.json
-    const newConfig = { ...siteConfig, notice };
+    const newConfig = { ...siteConfig, notice, categoryTitle };
     const content = btoa(unescape(encodeURIComponent(JSON.stringify(newConfig, null, 2))));
     const putRes = await fetch(`https://api.github.com/repos/${adminConfig.username}/${adminConfig.repo}/contents/config.json`, {
       method: 'PUT',
       headers: { 'Authorization': `token ${adminConfig.token}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: `更新公告 - ${new Date().toLocaleString('zh-CN')}`, content, sha })
+      body: JSON.stringify({ message: `更新设置 - ${new Date().toLocaleString('zh-CN')}`, content, sha })
     });
     if (!putRes.ok) throw new Error('保存失败');
     siteConfig = newConfig;
     document.getElementById('noticeText').textContent = notice;
+    document.getElementById('categoryTitle').textContent = categoryTitle;
     closeDialog('noticeEditDialog');
-    showToast('公告保存成功，1-2分钟后生效', 'success');
+    showToast('设置保存成功，1-2分钟后生效', 'success');
   } catch(e) {
     showToast('保存失败：' + e.message, 'error');
   } finally {
