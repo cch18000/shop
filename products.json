@@ -1,14 +1,5 @@
 [
   {
-    "id": 6,
-    "name": "战术腰带",
-    "price": 69,
-    "category": "服装鞋帽",
-    "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400",
-    "description": "尼龙战术腰带，快速释放扣，承重强，可挂载装备。",
-    "sku": "CLO-002"
-  },
-  {
     "id": 7,
     "name": "户外登山靴",
     "price": 399,
