@@ -1,0 +1,182 @@
+[
+  {
+    "id": 1,
+    "name": "战术户外背包",
+    "price": 199,
+    "category": "户外装备",
+    "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400",
+    "description": "大容量战术背包，防水耐磨，多隔层设计，适合户外探险和日常通勤。",
+    "sku": "OUT-001"
+  },
+  {
+    "id": 2,
+    "name": "军迷战术手套",
+    "price": 59,
+    "category": "户外装备",
+    "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+    "description": "防滑耐磨战术手套，触屏指尖设计，保护双手同时不影响操作。",
+    "sku": "OUT-002"
+  },
+  {
+    "id": 3,
+    "name": "户外保温杯",
+    "price": 89,
+    "category": "户外装备",
+    "image": "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=400",
+    "description": "304不锈钢保温杯，24小时保温，大容量500ml，户外必备。",
+    "sku": "OUT-003"
+  },
+  {
+    "id": 4,
+    "name": "战术手电筒",
+    "price": 129,
+    "category": "户外装备",
+    "image": "https://images.unsplash.com/photo-1599420186946-7b6fb4e297f0?w=400",
+    "description": "强光战术手电，USB充电，五档调光，户外防身照明两用。",
+    "sku": "OUT-004"
+  },
+  {
+    "id": 5,
+    "name": "迷彩作训服",
+    "price": 299,
+    "category": "服装鞋帽",
+    "image": "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=400",
+    "description": "高品质迷彩作训服，透气耐磨，多尺码可选，适合训练和户外。",
+    "sku": "CLO-001"
+  },
+  {
+    "id": 6,
+    "name": "战术腰带",
+    "price": 69,
+    "category": "服装鞋帽",
+    "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400",
+    "description": "尼龙战术腰带，快速释放扣，承重强，可挂载装备。",
+    "sku": "CLO-002"
+  },
+  {
+    "id": 7,
+    "name": "户外登山靴",
+    "price": 399,
+    "category": "服装鞋帽",
+    "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400",
+    "description": "高帮登山靴，防水防滑，减震舒适，适合各种复杂地形。",
+    "sku": "CLO-003"
+  },
+  {
+    "id": 8,
+    "name": "棒球帽",
+    "price": 39,
+    "category": "服装鞋帽",
+    "image": "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=400",
+    "description": "棉质棒球帽，可调节大小，遮阳防晒，日常百搭。",
+    "sku": "CLO-004"
+  },
+  {
+    "id": 9,
+    "name": "多功能工具钳",
+    "price": 159,
+    "category": "工具配件",
+    "image": "https://images.unsplash.com/photo-1599420186946-7b6fb4e297f0?w=400",
+    "description": "不锈钢多功能工具钳，十几种功能合一，户外应急必备。",
+    "sku": "TOOL-001"
+  },
+  {
+    "id": 10,
+    "name": "户外求生哨",
+    "price": 19,
+    "category": "工具配件",
+    "image": "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=400",
+    "description": "高频求生哨，声音穿透力强，户外遇险求救必备。",
+    "sku": "TOOL-002"
+  },
+  {
+    "id": 11,
+    "name": "战术钱包",
+    "price": 89,
+    "category": "工具配件",
+    "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400",
+    "description": "RFID防盗刷战术钱包，碳纤维材质，轻薄大容量。",
+    "sku": "TOOL-003"
+  },
+  {
+    "id": 12,
+    "name": "户外水壶",
+    "price": 49,
+    "category": "工具配件",
+    "image": "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=400",
+    "description": "运动户外水壶，Tritan材质，大容量750ml，便携防漏。",
+    "sku": "TOOL-004"
+  },
+  {
+    "id": 13,
+    "name": "压缩饼干",
+    "price": 29,
+    "category": "食品饮料",
+    "image": "https://images.unsplash.com/photo-1599420186946-7b6fb4e297f0?w=400",
+    "description": "军用压缩饼干，高能量饱腹，保质期长，户外应急储备。",
+    "sku": "FOOD-001"
+  },
+  {
+    "id": 14,
+    "name": "功能饮料",
+    "price": 6,
+    "category": "食品饮料",
+    "image": "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=400",
+    "description": "运动功能饮料，补充电解质，快速恢复体力。",
+    "sku": "FOOD-002"
+  },
+  {
+    "id": 15,
+    "name": "自热米饭",
+    "price": 25,
+    "category": "食品饮料",
+    "image": "https://images.unsplash.com/photo-1599420186946-7b6fb4e297f0?w=400",
+    "description": "自热方便米饭，多种口味可选，户外用餐不用火不用电。",
+    "sku": "FOOD-003"
+  },
+  {
+    "id": 16,
+    "name": "能量棒",
+    "price": 15,
+    "category": "食品饮料",
+    "image": "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=400",
+    "description": "高蛋白能量棒，补充体力，户外运动代餐首选。",
+    "sku": "FOOD-004"
+  },
+  {
+    "id": 17,
+    "name": "户外帐篷",
+    "price": 599,
+    "category": "户外装备",
+    "image": "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=400",
+    "description": "双人速开帐篷，防水防风，自动弹开设计，户外露营必备。",
+    "sku": "OUT-005"
+  },
+  {
+    "id": 18,
+    "name": "睡袋",
+    "price": 199,
+    "category": "户外装备",
+    "image": "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=400",
+    "description": "四季通用睡袋，舒适温度-5℃，填充保暖棉，便携收纳。",
+    "sku": "OUT-006"
+  },
+  {
+    "id": 19,
+    "name": "登山杖",
+    "price": 89,
+    "category": "户外装备",
+    "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400",
+    "description": "碳纤维登山杖，超轻可折叠，减震设计，保护膝盖。",
+    "sku": "OUT-007"
+  },
+  {
+    "id": 20,
+    "name": "头灯",
+    "price": 79,
+    "category": "户外装备",
+    "image": "https://images.unsplash.com/photo-1599420186946-7b6fb4e297f0?w=400",
+    "description": "LED强光头灯，USB充电，感应开关，解放双手户外必备。",
+    "sku": "OUT-008"
+  }
+]
