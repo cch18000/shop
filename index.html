@@ -59,6 +59,23 @@
   .empty-btn{padding:8px 20px;background:#1e3a5f;color:#fff;border-radius:20px;font-size:13px;font-weight:500}
   .detail-img-wrap{width:100%;aspect-ratio:1/1;background:#fff;position:relative;overflow:hidden}
   .detail-img-wrap img{width:100%;height:100%;object-fit:cover}
+  .detail-swiper{width:100%;height:100%;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .detail-swiper::-webkit-scrollbar{display:none}
+  .detail-swiper-item{flex:0 0 100%;scroll-snap-align:start;position:relative}
+  .detail-swiper-item img{width:100%;height:100%;object-fit:cover}
+  .swiper-dots{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:2}
+  .swiper-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.5);transition:all .2s}
+  .swiper-dot.active{background:#fff;width:18px;border-radius:3px}
+  .swiper-count{position:absolute;top:12px;right:12px;padding:3px 10px;background:rgba(0,0,0,0.5);color:#fff;border-radius:12px;font-size:12px;z-index:2}
+  .multi-upload-area{border:2px dashed #cbd5e1;border-radius:8px;padding:16px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:10px}
+  .multi-upload-area:hover{border-color:#1e3a5f;background:#f8fafc}
+  .multi-upload-area:active{transform:scale(0.98)}
+  .image-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+  .image-grid-item{position:relative;aspect-ratio:1/1;border-radius:8px;overflow:hidden;border:1px solid #e2e8f0}
+  .image-grid-item img{width:100%;height:100%;object-fit:cover}
+  .image-grid-item.cover::after{content:'封面';position:absolute;top:4px;left:4px;padding:1px 6px;background:#1e3a5f;color:#fff;border-radius:4px;font-size:10px}
+  .image-grid-del{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;background:rgba(220,38,38,0.9);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2}
+  .image-grid-del:active{transform:scale(0.9)}
   .detail-category-badge{position:absolute;top:16px;left:16px;padding:4px 10px;background:rgba(255,255,255,0.95);border-radius:12px;font-size:11px;color:#1e3a5f;font-weight:500}
   .detail-info{padding:20px 16px;background:#fff;border-bottom:8px solid #f1f5f9}
   .detail-price{display:flex;align-items:baseline;gap:10px;margin-bottom:8px}
@@ -392,17 +409,15 @@
           <datalist id="categoryList"></datalist>
         </div>
         <div class="form-group">
-          <label class="form-label">商品图片</label>
-          <input type="text" class="form-input" id="pfImage" placeholder="图片链接，或点下方按钮上传" />
-          <div style="display:flex;gap:8px;margin-top:8px;align-items:center;">
-            <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('imageUpload').click()">📷 上传图片</button>
-            <span id="uploadStatus" style="font-size:12px;color:#94a3b8;"></span>
+          <label class="form-label">商品图片（可一次选多张，第一张为封面）</label>
+          <div class="multi-upload-area" onclick="document.getElementById('imageUpload').click()">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto 8px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+            <div style="font-size:13px;color:#64748b;">点击选择图片（可多选）</div>
+            <div style="font-size:11px;color:#94a3b8;margin-top:4px;">支持JPG/PNG，单张不超过5MB</div>
           </div>
-          <input type="file" id="imageUpload" accept="image/*" style="display:none;" onchange="uploadImage(event)" />
-          <div id="imagePreview" style="margin-top:8px;display:none;text-align:center;">
-            <img id="previewImg" style="max-width:100%;max-height:140px;border-radius:8px;border:1px solid #e2e8f0;" />
-          </div>
-          <div class="config-hint">可以直接上传本地图片（自动存到GitHub），或手动填写图片链接</div>
+          <input type="file" id="imageUpload" accept="image/*" multiple style="display:none;" onchange="uploadMultipleImages(event)" />
+          <div class="image-grid" id="imageGrid"></div>
+          <div id="uploadStatus" style="font-size:12px;color:#94a3b8;margin-top:6px;"></div>
         </div>
         <div class="form-group">
           <label class="form-label">商品描述</label>
@@ -457,6 +472,7 @@ let currentCategory = '全部';
 let adminConfig = null;
 let editingProductId = null;
 let isUploading = false;
+let editingImages = [];
 let confirmCallback = null;
 
 const CUSTOMER_SERVICE = {
@@ -552,11 +568,13 @@ function renderProducts() {
     return;
   }
   empty.style.display = 'none';
-  grid.innerHTML = filtered.map(p => `
+  grid.innerHTML = filtered.map(p => {
+    const coverImg = getImages(p)[0];
+    return `
     <div class="product-card" onclick="showDetail(${p.id})">
       <div class="product-img-wrap">
         <span class="product-category-badge">${p.category}</span>
-        <img src="${p.image}" alt="${p.name}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23e2e8f0%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%2394a3b8%22 font-size=%2212%22>图片</text></svg>'" />
+        <img src="${coverImg}" alt="${p.name}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23e2e8f0%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%2394a3b8%22 font-size=%2212%22>图片</text></svg>'" />
       </div>
       <div class="product-info">
         <div class="product-name">${p.name}</div>
@@ -596,14 +614,25 @@ function selectCategory(cat) {
 }
 
 // ==================== 商品详情 ====================
+// 获取商品图片列表（兼容旧数据单图）
+function getImages(p) {
+  if (p.images && Array.isArray(p.images) && p.images.length > 0) return p.images;
+  if (p.image) return [p.image];
+  return ['https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400'];
+}
+
 function showDetail(id) {
   const p = products.find(x => x.id === id);
   if (!p) return;
   currentProduct = p;
+  const imgs = getImages(p);
   document.getElementById('detailContent').innerHTML = `
     <div class="detail-img-wrap">
       <span class="detail-category-badge">${p.category}</span>
-      <img src="${p.image}" alt="${p.name}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23e2e8f0%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%2394a3b8%22 font-size=%2212%22>图片</text></svg>'" />
+      <div class="detail-swiper" id="detailSwiper">
+        ${imgs.map((img, i) => `<div class="detail-swiper-item"><img src="${img}" alt="${p.name}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23e2e8f0%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%2394a3b8%22 font-size=%2212%22>图片</text></svg>'" /></div>`).join('')}
+      </div>
+      ${imgs.length > 1 ? `<div class="swiper-count">1/${imgs.length}</div><div class="swiper-dots">${imgs.map((_, i) => `<div class="swiper-dot ${i === 0 ? 'active' : ''}"></div>`).join('')}</div>` : ''}
     </div>
     <div class="detail-info">
       <div class="detail-price">
@@ -626,6 +655,19 @@ function showDetail(id) {
     </div>
   `;
   navigate('detail');
+  // 轮播交互
+  setTimeout(() => {
+    const swiper = document.getElementById('detailSwiper');
+    const dots = document.querySelectorAll('.swiper-dot');
+    const count = document.querySelector('.swiper-count');
+    if (swiper && dots.length > 0) {
+      swiper.addEventListener('scroll', () => {
+        const idx = Math.round(swiper.scrollLeft / swiper.offsetWidth);
+        dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+        if (count) count.textContent = `${idx+1}/${dots.length}`;
+      });
+    }
+  }, 100);
 }
 
 function addToCartFromDetail() {
@@ -672,8 +714,9 @@ function renderCart() {
     const p = products.find(x => x.id === item.id);
     if (!p) return '';
     total += p.price * item.qty;
+    const cartImg = getImages(p)[0];
     return `<div class="cart-item">
-      <div class="cart-item-img"><img src="${p.image}" alt="${p.name}" /></div>
+      <div class="cart-item-img"><img src="${cartImg}" alt="${p.name}" /></div>
       <div class="cart-item-info">
         <div><div class="cart-item-name">${p.name}</div><div class="cart-item-cat">${p.category}</div></div>
         <div class="cart-item-bottom">
@@ -876,9 +919,11 @@ function renderAdminProducts() {
     list.innerHTML = `<div class="empty-state"><div class="empty-title">暂无商品</div><div class="empty-desc">点击右下角+按钮新增商品</div></div>`;
     return;
   }
-  list.innerHTML = filtered.map(p => `
+  list.innerHTML = filtered.map(p => {
+    const adminImg = getImages(p)[0];
+    return `
     <div class="admin-product-item">
-      <div class="admin-product-img"><img src="${p.image}" alt="${p.name}" onerror="this.style.display='none'" /></div>
+      <div class="admin-product-img"><img src="${adminImg}" alt="${p.name}" onerror="this.style.display='none'" /></div>
       <div class="admin-product-info">
         <div class="admin-product-name">${p.name}</div>
         <div class="admin-product-meta">${p.category} · ${p.sku || '无编号'}</div>
@@ -892,86 +937,113 @@ function renderAdminProducts() {
   `).join('');
 }
 
-async function uploadImage(event) {
-  const file = event.target.files[0];
-  if (!file) return;
+async function uploadMultipleImages(event) {
+  const files = event.target.files;
+  if (!files || files.length === 0) return;
   if (!adminConfig) {
     showToast('请先登录管理后台', 'error');
     return;
   }
-  if (file.size > 5 * 1024 * 1024) {
-    showToast('图片不能超过5MB', 'error');
-    return;
-  }
-  // 锁定界面，防止上传中断
+  // 锁定界面
   isUploading = true;
   const saveBtn = document.getElementById('saveProductBtn');
   const cancelBtn = document.getElementById('cancelProductBtn');
   if (saveBtn) { saveBtn.disabled = true; saveBtn.style.opacity = '0.5'; saveBtn.style.cursor = 'not-allowed'; }
   if (cancelBtn) { cancelBtn.disabled = true; cancelBtn.style.opacity = '0.5'; cancelBtn.style.cursor = 'not-allowed'; }
   const status = document.getElementById('uploadStatus');
-  status.textContent = '上传中，请勿关闭...';
-  status.style.color = '#f59e0b';
-  try {
-    const reader = new FileReader();
-    reader.onload = async function(e) {
-      try {
-        const base64 = e.target.result.split(',')[1];
-        const ext = file.name.split('.').pop() || 'jpg';
-        const fileName = 'img_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6) + '.' + ext;
-        const path = 'images/' + fileName;
-        const res = await fetch(`https://api.github.com/repos/${adminConfig.username}/${adminConfig.repo}/contents/${path}`, {
-          method: 'PUT',
-          headers: {
-            'Authorization': `token ${adminConfig.token}`,
-            'Accept': 'application/vnd.github.v3+json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            message: `上传商品图片 ${fileName}`,
-            content: base64
-          })
-        });
-        if (!res.ok) throw new Error('上传失败');
-        const imageUrl = `https://${adminConfig.username}.github.io/${adminConfig.repo}/${path}`;
-        document.getElementById('pfImage').value = imageUrl;
-        document.getElementById('previewImg').src = imageUrl;
-        document.getElementById('imagePreview').style.display = 'block';
-        status.textContent = '上传成功！';
-        status.style.color = '#16a34a';
-        showToast('图片上传成功', 'success');
-      } catch(err) {
-        status.textContent = '上传失败';
-        status.style.color = '#dc2626';
-        showToast('上传失败：' + err.message, 'error');
-      } finally {
-        // 解锁界面
-        isUploading = false;
-        if (saveBtn) { saveBtn.disabled = false; saveBtn.style.opacity = '1'; saveBtn.style.cursor = 'pointer'; }
-        if (cancelBtn) { cancelBtn.disabled = false; cancelBtn.style.opacity = '1'; cancelBtn.style.cursor = 'pointer'; }
-      }
-    };
-    reader.readAsDataURL(file);
-  } catch(e) {
-    status.textContent = '上传失败';
-    status.style.color = '#dc2626';
-    showToast('上传失败：' + e.message, 'error');
-    isUploading = false;
-    if (saveBtn) { saveBtn.disabled = false; saveBtn.style.opacity = '1'; saveBtn.style.cursor = 'pointer'; }
-    if (cancelBtn) { cancelBtn.disabled = false; cancelBtn.style.opacity = '1'; cancelBtn.style.cursor = 'pointer'; }
+  let successCount = 0;
+  let failCount = 0;
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+    if (file.size > 5 * 1024 * 1024) {
+      failCount++;
+      continue;
+    }
+    status.textContent = `正在上传 ${i+1}/${files.length}...`;
+    status.style.color = '#f59e0b';
+    try {
+      const base64 = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = e => resolve(e.target.result.split(',')[1]);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+      const ext = file.name.split('.').pop() || 'jpg';
+      const fileName = 'img_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6) + '.' + ext;
+      const path = 'images/' + fileName;
+      const res = await fetch(`https://api.github.com/repos/${adminConfig.username}/${adminConfig.repo}/contents/${path}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `token ${adminConfig.token}`,
+          'Accept': 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: `上传商品图片 ${fileName}`,
+          content: base64
+        })
+      });
+      if (!res.ok) throw new Error('上传失败');
+      const imageUrl = `https://${adminConfig.username}.github.io/${adminConfig.repo}/${path}`;
+      editingImages.push(imageUrl);
+      successCount++;
+      renderImageGrid();
+    } catch(e) {
+      failCount++;
+    }
   }
+  // 解锁界面
+  isUploading = false;
+  if (saveBtn) { saveBtn.disabled = false; saveBtn.style.opacity = '1'; saveBtn.style.cursor = 'pointer'; }
+  if (cancelBtn) { cancelBtn.disabled = false; cancelBtn.style.opacity = '1'; cancelBtn.style.cursor = 'pointer'; }
+  if (failCount === 0) {
+    status.textContent = `成功上传 ${successCount} 张图片`;
+    status.style.color = '#16a34a';
+    showToast(`成功上传 ${successCount} 张图片`, 'success');
+  } else {
+    status.textContent = `成功 ${successCount} 张，失败 ${failCount} 张`;
+    status.style.color = '#f59e0b';
+    showToast(`成功 ${successCount} 张，失败 ${failCount} 张`, 'error');
+  }
+  document.getElementById('imageUpload').value = '';
+}
+
+function renderImageGrid() {
+  const grid = document.getElementById('imageGrid');
+  if (editingImages.length === 0) {
+    grid.innerHTML = '';
+    return;
+  }
+  grid.innerHTML = editingImages.map((img, i) => `
+    <div class="image-grid-item ${i === 0 ? 'cover' : ''}">
+      <img src="${img}" alt="图片${i+1}" />
+      <div class="image-grid-del" onclick="removeEditingImage(${i})" title="删除">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+      </div>
+    </div>
+  `).join('');
+}
+
+function removeEditingImage(index) {
+  if (isUploading) {
+    showToast('正在上传中，请稍候...', 'error');
+    return;
+  }
+  editingImages.splice(index, 1);
+  renderImageGrid();
+  showToast('已删除图片', 'success');
 }
 
 function showProductForm() {
   editingProductId = null;
+  editingImages = [];
   document.getElementById('productFormTitle').textContent = '新增商品';
   document.getElementById('pfName').value = '';
   document.getElementById('pfSku').value = '';
   document.getElementById('pfPrice').value = '';
   document.getElementById('pfCategory').value = '';
-  document.getElementById('pfImage').value = '';
   document.getElementById('pfDesc').value = '';
-  document.getElementById('imagePreview').style.display = 'none';
+  renderImageGrid();
   document.getElementById('uploadStatus').textContent = '';
   document.getElementById('imageUpload').value = '';
   updateCategoryDatalist();
@@ -982,22 +1054,17 @@ function editProduct(id) {
   const p = products.find(x => x.id === id);
   if (!p) return;
   editingProductId = id;
+  editingImages = [...getImages(p)];
   document.getElementById('productFormTitle').textContent = '编辑商品';
   document.getElementById('pfName').value = p.name;
   document.getElementById('pfSku').value = p.sku || '';
   document.getElementById('pfPrice').value = p.price;
   document.getElementById('pfCategory').value = p.category;
-  document.getElementById('pfImage').value = p.image || '';
   document.getElementById('pfDesc').value = p.description || '';
   updateCategoryDatalist();
-  // 显示图片预览
-  if (p.image) {
-    document.getElementById('previewImg').src = p.image;
-    document.getElementById('imagePreview').style.display = 'block';
-  } else {
-    document.getElementById('imagePreview').style.display = 'none';
-  }
+  renderImageGrid();
   document.getElementById('uploadStatus').textContent = '';
+  document.getElementById('imageUpload').value = '';
   document.getElementById('productFormDialog').classList.add('show');
 }
 
@@ -1019,7 +1086,7 @@ function saveProduct() {
     price,
     category,
     sku: document.getElementById('pfSku').value.trim(),
-    image: document.getElementById('pfImage').value.trim() || 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400',
+    images: editingImages.length > 0 ? [...editingImages] : ['https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400'],
     description: document.getElementById('pfDesc').value.trim()
   };
   if (editingProductId) {
