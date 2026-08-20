@@ -81,15 +81,6 @@
     "sku": "FOOD-001"
   },
   {
-    "id": 15,
-    "name": "自热米饭",
-    "price": 25,
-    "category": "食品饮料",
-    "image": "https://images.unsplash.com/photo-1599420186946-7b6fb4e297f0?w=400",
-    "description": "自热方便米饭，多种口味可选，户外用餐不用火不用电。",
-    "sku": "FOOD-003"
-  },
-  {
     "id": 17,
     "name": "户外帐篷",
     "price": 599,
