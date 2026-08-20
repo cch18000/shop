@@ -1,14 +1,5 @@
 [
   {
-    "id": 4,
-    "name": "战术手电筒",
-    "price": 129,
-    "category": "户外装备",
-    "image": "https://images.unsplash.com/photo-1599420186946-7b6fb4e297f0?w=400",
-    "description": "强光战术手电，USB充电，五档调光，户外防身照明两用。",
-    "sku": "OUT-004"
-  },
-  {
     "id": 5,
     "name": "迷彩作训服",
     "price": 299,
