@@ -411,8 +411,8 @@
       </div>
       <div class="dialog-footer">
         <div class="btn-row">
-          <button class="btn btn-secondary" onclick="closeDialog('productFormDialog')">取消</button>
-          <button class="btn btn-primary" onclick="saveProduct()">保存</button>
+          <button class="btn btn-secondary" id="cancelProductBtn" onclick="closeDialog('productFormDialog')">取消</button>
+          <button class="btn btn-primary" id="saveProductBtn" onclick="saveProduct()">保存</button>
         </div>
       </div>
     </div>
@@ -456,6 +456,7 @@ let currentProduct = null;
 let currentCategory = '全部';
 let adminConfig = null;
 let editingProductId = null;
+let isUploading = false;
 let confirmCallback = null;
 
 const CUSTOMER_SERVICE = {
@@ -714,12 +715,24 @@ function showServiceDialog() {
 }
 
 function closeDialog(id) {
+  // 上传图片中禁止关闭商品编辑弹窗
+  if (id === 'productFormDialog' && isUploading) {
+    showToast('图片正在上传中，请稍候...', 'error');
+    return;
+  }
   document.getElementById(id).classList.remove('show');
 }
 
 document.querySelectorAll('.dialog-mask').forEach(mask => {
   mask.addEventListener('click', e => {
-    if (e.target === mask) mask.classList.remove('show');
+    if (e.target === mask) {
+      // 上传图片中禁止点击遮罩关闭商品编辑弹窗
+      if (mask.id === 'productFormDialog' && isUploading) {
+        showToast('图片正在上传中，请稍候...', 'error');
+        return;
+      }
+      mask.classList.remove('show');
+    }
   });
 });
 
@@ -891,42 +904,62 @@ async function uploadImage(event) {
     showToast('图片不能超过5MB', 'error');
     return;
   }
+  // 锁定界面，防止上传中断
+  isUploading = true;
+  const saveBtn = document.getElementById('saveProductBtn');
+  const cancelBtn = document.getElementById('cancelProductBtn');
+  if (saveBtn) { saveBtn.disabled = true; saveBtn.style.opacity = '0.5'; saveBtn.style.cursor = 'not-allowed'; }
+  if (cancelBtn) { cancelBtn.disabled = true; cancelBtn.style.opacity = '0.5'; cancelBtn.style.cursor = 'not-allowed'; }
   const status = document.getElementById('uploadStatus');
-  status.textContent = '上传中...';
+  status.textContent = '上传中，请勿关闭...';
   status.style.color = '#f59e0b';
   try {
     const reader = new FileReader();
     reader.onload = async function(e) {
-      const base64 = e.target.result.split(',')[1];
-      const ext = file.name.split('.').pop() || 'jpg';
-      const fileName = 'img_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6) + '.' + ext;
-      const path = 'images/' + fileName;
-      const res = await fetch(`https://api.github.com/repos/${adminConfig.username}/${adminConfig.repo}/contents/${path}`, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `token ${adminConfig.token}`,
-          'Accept': 'application/vnd.github.v3+json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          message: `上传商品图片 ${fileName}`,
-          content: base64
-        })
-      });
-      if (!res.ok) throw new Error('上传失败');
-      const imageUrl = `https://${adminConfig.username}.github.io/${adminConfig.repo}/${path}`;
-      document.getElementById('pfImage').value = imageUrl;
-      document.getElementById('previewImg').src = imageUrl;
-      document.getElementById('imagePreview').style.display = 'block';
-      status.textContent = '上传成功！';
-      status.style.color = '#16a34a';
-      showToast('图片上传成功', 'success');
+      try {
+        const base64 = e.target.result.split(',')[1];
+        const ext = file.name.split('.').pop() || 'jpg';
+        const fileName = 'img_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6) + '.' + ext;
+        const path = 'images/' + fileName;
+        const res = await fetch(`https://api.github.com/repos/${adminConfig.username}/${adminConfig.repo}/contents/${path}`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `token ${adminConfig.token}`,
+            'Accept': 'application/vnd.github.v3+json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            message: `上传商品图片 ${fileName}`,
+            content: base64
+          })
+        });
+        if (!res.ok) throw new Error('上传失败');
+        const imageUrl = `https://${adminConfig.username}.github.io/${adminConfig.repo}/${path}`;
+        document.getElementById('pfImage').value = imageUrl;
+        document.getElementById('previewImg').src = imageUrl;
+        document.getElementById('imagePreview').style.display = 'block';
+        status.textContent = '上传成功！';
+        status.style.color = '#16a34a';
+        showToast('图片上传成功', 'success');
+      } catch(err) {
+        status.textContent = '上传失败';
+        status.style.color = '#dc2626';
+        showToast('上传失败：' + err.message, 'error');
+      } finally {
+        // 解锁界面
+        isUploading = false;
+        if (saveBtn) { saveBtn.disabled = false; saveBtn.style.opacity = '1'; saveBtn.style.cursor = 'pointer'; }
+        if (cancelBtn) { cancelBtn.disabled = false; cancelBtn.style.opacity = '1'; cancelBtn.style.cursor = 'pointer'; }
+      }
     };
     reader.readAsDataURL(file);
   } catch(e) {
     status.textContent = '上传失败';
     status.style.color = '#dc2626';
     showToast('上传失败：' + e.message, 'error');
+    isUploading = false;
+    if (saveBtn) { saveBtn.disabled = false; saveBtn.style.opacity = '1'; saveBtn.style.cursor = 'pointer'; }
+    if (cancelBtn) { cancelBtn.disabled = false; cancelBtn.style.opacity = '1'; cancelBtn.style.cursor = 'pointer'; }
   }
 }
 
