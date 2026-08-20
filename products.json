@@ -1,14 +1,5 @@
 [
   {
-    "id": 17,
-    "name": "户外帐篷",
-    "price": 599,
-    "category": "户外装备",
-    "image": "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=400",
-    "description": "双人速开帐篷，防水防风，自动弹开设计，户外露营必备。",
-    "sku": "OUT-005"
-  },
-  {
     "id": 18,
     "name": "睡袋",
     "price": 199,
