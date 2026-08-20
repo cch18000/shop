@@ -1,14 +1,5 @@
 [
   {
-    "id": 13,
-    "name": "压缩饼干",
-    "price": 29,
-    "category": "食品饮料",
-    "image": "https://images.unsplash.com/photo-1599420186946-7b6fb4e297f0?w=400",
-    "description": "军用压缩饼干，高能量饱腹，保质期长，户外应急储备。",
-    "sku": "FOOD-001"
-  },
-  {
     "id": 14,
     "name": "功能饮料",
     "price": 6,
