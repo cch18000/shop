@@ -1,14 +1,5 @@
 [
   {
-    "id": 10,
-    "name": "户外求生哨",
-    "price": 19,
-    "category": "工具配件",
-    "image": "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=400",
-    "description": "高频求生哨，声音穿透力强，户外遇险求救必备。",
-    "sku": "TOOL-002"
-  },
-  {
     "id": 11,
     "name": "战术钱包",
     "price": 89,
