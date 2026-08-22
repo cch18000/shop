@@ -55,5 +55,23 @@
     ],
     "description": "",
     "costPrice": 555
+  },
+  {
+    "id": 24,
+    "status": "online",
+    "name": "【0316路款黑色钢带款手表】",
+    "price": 999,
+    "category": "手表",
+    "sku": "0316--石英机芯",
+    "images": [
+      "https://cch18000.github.io/shop/images/img_1787388657508_xz2sjg.jpg",
+      "https://cch18000.github.io/shop/images/img_1787388660227_vyp7mv.jpg",
+      "https://cch18000.github.io/shop/images/img_1787388663445_9rc650.jpg",
+      "https://cch18000.github.io/shop/images/img_1787388665627_9rzevn.jpg",
+      "https://cch18000.github.io/shop/images/img_1787388667719_n9d6o5.jpg",
+      "https://cch18000.github.io/shop/images/img_1787388670796_8cknv9.jpg"
+    ],
+    "description": "",
+    "costPrice": 555
   }
 ]
