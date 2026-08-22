@@ -37,5 +37,23 @@
     ],
     "description": "",
     "costPrice": 555
+  },
+  {
+    "id": 23,
+    "status": "online",
+    "name": "【0316复兴皮带款】",
+    "price": 999,
+    "category": "手表",
+    "sku": "0316--复兴--石英机芯",
+    "images": [
+      "https://cch18000.github.io/shop/images/img_1787388402626_696l1x.jpg",
+      "https://cch18000.github.io/shop/images/img_1787388405289_q3gtm4.jpg",
+      "https://cch18000.github.io/shop/images/img_1787388408660_1ghok5.jpg",
+      "https://cch18000.github.io/shop/images/img_1787388411193_3hwdjx.jpg",
+      "https://cch18000.github.io/shop/images/img_1787388413734_78w00z.jpg",
+      "https://cch18000.github.io/shop/images/img_1787388416755_pmc9tv.jpg"
+    ],
+    "description": "",
+    "costPrice": 555
   }
 ]
