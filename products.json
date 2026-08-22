@@ -95,5 +95,23 @@
     ],
     "description": "",
     "costPrice": 598
+  },
+  {
+    "id": 26,
+    "status": "online",
+    "name": "【0316黑色皮带款手表】",
+    "price": 999,
+    "category": "手表",
+    "sku": "0316--石英机芯",
+    "images": [
+      "https://cch18000.github.io/shop/images/img_1787390084456_lvw1mt.jpg",
+      "https://cch18000.github.io/shop/images/img_1787390087446_ca8gju.jpg",
+      "https://cch18000.github.io/shop/images/img_1787390090159_zst11t.jpg",
+      "https://cch18000.github.io/shop/images/img_1787390092948_176pxq.jpg",
+      "https://cch18000.github.io/shop/images/img_1787390095584_36zg4f.jpg",
+      "https://cch18000.github.io/shop/images/img_1787390098151_74qx8s.jpg"
+    ],
+    "description": "【0316黑色皮带款手表】机芯采用进口西铁城石英机芯，双按蝴蝶扣制作而成，款式简约，风格脱俗，军旅风木盒包装，附带截表器和拆表工具，送礼自用都很合适🌲",
+    "costPrice": 555
   }
 ]
