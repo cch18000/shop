@@ -19,5 +19,23 @@
     "description": "【1123品牌W款机械表】原装进口西铁城机械机芯，走时基本无误差，蓝宝石玻璃镜面，精钢表壳表带，50米深度防水，304精钢蝴蝶扣，皮带钢带两款可选🌲",
     "costPrice": 888,
     "status": "online"
+  },
+  {
+    "id": 22,
+    "status": "online",
+    "name": "【路款白色皮带款手表】",
+    "price": 999,
+    "category": "手表",
+    "sku": "0316石英机芯",
+    "images": [
+      "https://cch18000.github.io/shop/images/img_1787388252613_k8xmo8.jpg",
+      "https://cch18000.github.io/shop/images/img_1787388255819_95129w.jpg",
+      "https://cch18000.github.io/shop/images/img_1787388258503_jglrqf.jpg",
+      "https://cch18000.github.io/shop/images/img_1787388261061_wj6on0.jpg",
+      "https://cch18000.github.io/shop/images/img_1787388263615_enzgoj.jpg",
+      "https://cch18000.github.io/shop/images/img_1787388266274_wddmcf.jpg"
+    ],
+    "description": "",
+    "costPrice": 555
   }
 ]
