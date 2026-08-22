@@ -73,5 +73,27 @@
     ],
     "description": "",
     "costPrice": 555
+  },
+  {
+    "id": 25,
+    "status": "online",
+    "name": "【0316复兴黑色款】",
+    "price": 999,
+    "category": "手表",
+    "sku": "0316--机械机芯",
+    "images": [
+      "https://cch18000.github.io/shop/images/img_1787389591341_7hplqs.jpg",
+      "https://cch18000.github.io/shop/images/img_1787389600755_9zcal3.jpg",
+      "https://cch18000.github.io/shop/images/img_1787389603360_kazc3v.jpg",
+      "https://cch18000.github.io/shop/images/img_1787389606122_j1l4ja.jpg",
+      "https://cch18000.github.io/shop/images/img_1787389608136_wl40yq.jpg",
+      "https://cch18000.github.io/shop/images/img_1787389611128_gx5fft.jpg",
+      "https://cch18000.github.io/shop/images/img_1787389613581_j5ytcn.jpg",
+      "https://cch18000.github.io/shop/images/img_1787389616370_xjs7m3.jpg",
+      "https://cch18000.github.io/shop/images/img_1787389618909_hw8vxa.jpg",
+      "https://cch18000.github.io/shop/images/img_1787389621457_qw4cyc.jpg"
+    ],
+    "description": "",
+    "costPrice": 598
   }
 ]
