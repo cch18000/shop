@@ -52,6 +52,10 @@
   .category-section{padding:12px 0 0}
   .category-tabs{display:flex;gap:8px;padding:0 16px 12px;overflow-x:auto;scrollbar-width:none}
   .category-tabs::-webkit-scrollbar{display:none}
+  .sub-category-tabs{display:flex;gap:6px;padding:0 16px 10px;overflow-x:auto;scrollbar-width:none;background:#f8fafc;border-top:1px solid #e2e8f0;padding-top:10px}
+  .sub-category-tabs::-webkit-scrollbar{display:none}
+  .sub-tab-item{padding:5px 12px;border-radius:14px;font-size:12px;color:#64748b;background:#fff;border:1px solid #e2e8f0;white-space:nowrap;cursor:pointer;transition:all .15s;flex-shrink:0}
+  .sub-tab-item.active{background:#1e3a5f;color:#fff;border-color:#1e3a5f}
   .tab-item{flex-shrink:0;padding:6px 16px;background:#e2e8f0;color:#475569;border-radius:20px;font-size:13px;font-weight:500;transition:all .2s;white-space:nowrap}
   .tab-item.active{background:#1e3a5f;color:#fff}
   .tab-item:active{transform:scale(0.96)}
@@ -84,6 +88,7 @@
   .multi-upload-area{border:2px dashed #cbd5e1;border-radius:8px;padding:16px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:10px}
   .multi-upload-area:hover{border-color:#1e3a5f;background:#f8fafc}
   .multi-upload-area:active{transform:scale(0.98)}
+  .multi-upload-area.drag-over{border-color:#1e3a5f;background:#eff6ff;border-style:solid;transform:scale(1.02)}
   .image-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
   .image-grid-item{position:relative;aspect-ratio:1/1;border-radius:8px;overflow:hidden;border:1px solid #e2e8f0}
   .image-grid-item img{width:100%;height:100%;object-fit:cover}
@@ -244,6 +249,7 @@
     <div class="category-section">
       <div class="section-title" id="categoryTitle">商品分类</div>
       <div class="category-tabs" id="categoryTabs"></div>
+      <div class="sub-category-tabs" id="subCategoryTabs" style="display:none;"></div>
     </div>
     <div id="recommendSection"><div class="section-title">全部商品</div></div>
     <div class="product-grid" id="productGrid"></div>
@@ -502,15 +508,20 @@
           <input type="number" class="form-input" id="pfCostPrice" placeholder="0.00" step="0.01" />
         </div>
         <div class="form-group">
-          <label class="form-label">分类 *</label>
+          <label class="form-label">一级分类 *</label>
           <input type="text" class="form-input" id="pfCategory" placeholder="例如：户外装备" list="categoryList" />
           <datalist id="categoryList"></datalist>
         </div>
         <div class="form-group">
+          <label class="form-label">二级分类（小类）</label>
+          <input type="text" class="form-input" id="pfSubCategory" placeholder="例如：背包、帐篷（选填）" list="subCategoryList" />
+          <datalist id="subCategoryList"></datalist>
+        </div>
+        <div class="form-group">
           <label class="form-label">商品图片（可一次选多张，第一张为封面）</label>
-          <div class="multi-upload-area" onclick="document.getElementById('imageUpload').click()">
+          <div class="multi-upload-area" id="dropUploadArea" onclick="document.getElementById('imageUpload').click()">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto 8px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-            <div style="font-size:13px;color:#64748b;">点击选择图片（可多选）</div>
+            <div style="font-size:13px;color:#64748b;">点击选择图片 <span style="color:#94a3b8;">或拖拽到此处</span></div>
             <div style="font-size:11px;color:#94a3b8;margin-top:4px;">支持JPG/PNG，单张不超过5MB</div>
           </div>
           <input type="file" id="imageUpload" accept="image/*" multiple style="display:none;" onchange="uploadMultipleImages(event)" />
@@ -568,6 +579,7 @@ let siteConfig = { notice: '欢迎来到JR服务社商品查找系统' };
 let cart = JSON.parse(localStorage.getItem('jr_cart') || '[]');
 let currentProduct = null;
 let currentCategory = '全部';
+let currentSubCategory = '全部';
 let adminConfig = null;
 let editingProductId = null;
 let isUploading = false;
@@ -640,11 +652,15 @@ function setupEventListeners() {
   document.getElementById('searchClear').addEventListener('click', () => {
     document.getElementById('searchInput').value = '';
     document.getElementById('searchClear').classList.remove('show');
+    currentCategory = '全部';
+    currentSubCategory = '全部';
+    renderCategoryTabs();
     renderProducts();
   });
   document.getElementById('resetSearchBtn').addEventListener('click', () => {
     document.getElementById('searchInput').value = '';
     currentCategory = '全部';
+    currentSubCategory = '全部';
     renderCategoryTabs();
     renderProducts();
   });
@@ -682,10 +698,12 @@ function renderProducts() {
   const keyword = document.getElementById('searchInput').value.toLowerCase().trim();
   let filtered = products.filter(p => !p.status || p.status === 'online');
   if (currentCategory !== '全部') filtered = filtered.filter(p => p.category === currentCategory);
+  if (currentCategory !== '全部' && currentSubCategory !== '全部') filtered = filtered.filter(p => p.subCategory === currentSubCategory);
   if (keyword) filtered = filtered.filter(p =>
     p.name.toLowerCase().includes(keyword) ||
     (p.sku && p.sku.toLowerCase().includes(keyword)) ||
-    p.category.toLowerCase().includes(keyword)
+    p.category.toLowerCase().includes(keyword) ||
+    (p.subCategory && p.subCategory.toLowerCase().includes(keyword))
   );
   if (filtered.length === 0) {
     grid.innerHTML = '';
@@ -731,11 +749,36 @@ function renderCategoryTabs() {
   document.getElementById('categoryTabs').innerHTML = cats.map(c =>
     `<button class="tab-item ${c === currentCategory ? 'active' : ''}" onclick="selectCategory('${c}')">${c}</button>`
   ).join('');
+  renderSubCategoryTabs();
+}
+
+function renderSubCategoryTabs() {
+  const subTabs = document.getElementById('subCategoryTabs');
+  if (currentCategory === '全部') {
+    subTabs.style.display = 'none';
+    return;
+  }
+  const subCats = ['全部', ...new Set(products.filter(p => p.category === currentCategory && p.subCategory).map(p => p.subCategory))];
+  if (subCats.length <= 1) {
+    subTabs.style.display = 'none';
+    return;
+  }
+  subTabs.style.display = 'flex';
+  subTabs.innerHTML = subCats.map(c =>
+    `<button class="sub-tab-item ${c === currentSubCategory ? 'active' : ''}" onclick="selectSubCategory('${c}')">${c}</button>`
+  ).join('');
 }
 
 function selectCategory(cat) {
   currentCategory = cat;
+  currentSubCategory = '全部';
   renderCategoryTabs();
+  renderProducts();
+}
+
+function selectSubCategory(subCat) {
+  currentSubCategory = subCat;
+  renderSubCategoryTabs();
   renderProducts();
 }
 
@@ -1126,6 +1169,25 @@ function renderAdminProducts() {
   }).join('');
 }
 
+
+function initDragUpload() {
+  const dropArea = document.getElementById('dropUploadArea');
+  if (!dropArea) return;
+  ['dragenter','dragover','dragleave','drop'].forEach(ev => {
+    dropArea.addEventListener(ev, e => { e.preventDefault(); e.stopPropagation(); }, false);
+  });
+  ['dragenter','dragover'].forEach(ev => {
+    dropArea.addEventListener(ev, () => dropArea.classList.add('drag-over'), false);
+  });
+  ['dragleave','drop'].forEach(ev => {
+    dropArea.addEventListener(ev, () => dropArea.classList.remove('drag-over'), false);
+  });
+  dropArea.addEventListener('drop', e => {
+    const files = e.dataTransfer.files;
+    if (files && files.length > 0) uploadMultipleImages({ target: { files } });
+  }, false);
+}
+
 async function uploadMultipleImages(event) {
   const files = event.target.files;
   if (!files || files.length === 0) return;
@@ -1232,6 +1294,7 @@ function showProductForm() {
   document.getElementById('pfPrice').value = '';
   document.getElementById('pfCostPrice').value = '';
   document.getElementById('pfCategory').value = '';
+  document.getElementById('pfSubCategory').value = '';
   document.getElementById('pfDesc').value = '';
   renderImageGrid();
   document.getElementById('uploadStatus').textContent = '';
@@ -1251,6 +1314,7 @@ function editProduct(id) {
   document.getElementById('pfPrice').value = p.price;
   document.getElementById('pfCostPrice').value = p.costPrice || '';
   document.getElementById('pfCategory').value = p.category;
+  document.getElementById('pfSubCategory').value = p.subCategory || '';
   document.getElementById('pfDesc').value = p.description || '';
   updateCategoryDatalist();
   renderImageGrid();
@@ -1262,6 +1326,8 @@ function editProduct(id) {
 function updateCategoryDatalist() {
   const cats = [...new Set(products.map(p => p.category))];
   document.getElementById('categoryList').innerHTML = cats.map(c => `<option value="${c}">`).join('');
+  const subCats = [...new Set(products.filter(p => p.subCategory).map(p => p.subCategory))];
+  document.getElementById('subCategoryList').innerHTML = subCats.map(c => `<option value="${c}">`).join('');
 }
 
 function saveProduct() {
@@ -1276,6 +1342,7 @@ function saveProduct() {
     name,
     price,
     category,
+    subCategory: document.getElementById('pfSubCategory').value.trim(),
     sku: document.getElementById('pfSku').value.trim(),
     images: editingImages.length > 0 ? [...editingImages] : ['https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400'],
     description: document.getElementById('pfDesc').value.trim(),
