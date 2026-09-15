@@ -157,5 +157,27 @@
     ],
     "description": "【单兵通勤背包 四色齐全】 尺寸：47*18*36   面料：600D加密 尼龙防水面料",
     "costPrice": 0
+  },
+  {
+    "id": 29,
+    "status": "online",
+    "name": "三代将军杯",
+    "price": 89,
+    "category": "水杯-水壶",
+    "subCategory": "水杯",
+    "sku": "",
+    "images": [
+      "https://cch18000.github.io/shop/images/img_1789461236081_i0acqi.jpg",
+      "https://cch18000.github.io/shop/images/img_1789461251262_z6z882.jpg",
+      "https://cch18000.github.io/shop/images/img_1789461254280_xlsjfa.jpg",
+      "https://cch18000.github.io/shop/images/img_1789461257461_87ya80.jpg",
+      "https://cch18000.github.io/shop/images/img_1789461259997_h1v5dq.jpg",
+      "https://cch18000.github.io/shop/images/img_1789461262851_bxpyux.jpg",
+      "https://cch18000.github.io/shop/images/img_1789461265822_idg3lf.jpg",
+      "https://cch18000.github.io/shop/images/img_1789461268851_joooae.jpg",
+      "https://cch18000.github.io/shop/images/img_1789461271137_8ufwt5.jpg"
+    ],
+    "description": "",
+    "costPrice": 45
   }
 ]
