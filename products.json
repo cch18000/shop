@@ -135,5 +135,27 @@
     ],
     "description": "19作训包现货。面料：600D加密。尺寸：约宽30*厚17*高46CM",
     "costPrice": 45
+  },
+  {
+    "id": 28,
+    "status": "online",
+    "name": "单兵通勤",
+    "price": 89,
+    "category": "箱包",
+    "subCategory": "双肩包",
+    "sku": "",
+    "images": [
+      "https://cch18000.github.io/shop/images/img_1789461136111_5hgin0.jpg",
+      "https://cch18000.github.io/shop/images/img_1789461140389_byz0ko.jpg",
+      "https://cch18000.github.io/shop/images/img_1789461142966_7u3hhe.jpg",
+      "https://cch18000.github.io/shop/images/img_1789461144399_wg2ujc.jpg",
+      "https://cch18000.github.io/shop/images/img_1789461146146_bky42p.jpg",
+      "https://cch18000.github.io/shop/images/img_1789461147616_sasise.jpg",
+      "https://cch18000.github.io/shop/images/img_1789461149247_j0bjwp.jpg",
+      "https://cch18000.github.io/shop/images/img_1789461156459_wpvlqx.jpg",
+      "https://cch18000.github.io/shop/images/img_1789461159608_f4frfv.jpg"
+    ],
+    "description": "【单兵通勤背包 四色齐全】 尺寸：47*18*36   面料：600D加密 尼龙防水面料",
+    "costPrice": 0
   }
 ]
