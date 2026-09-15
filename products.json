@@ -267,5 +267,24 @@
     ],
     "description": "井前运包",
     "costPrice": 45
+  },
+  {
+    "id": 34,
+    "status": "online",
+    "name": "星空迷彩前运包",
+    "price": 165,
+    "category": "箱包",
+    "subCategory": "前运包--后留包",
+    "sku": "",
+    "images": [
+      "https://cch18000.github.io/shop/images/img_1789462728715_qy5g5d.jpg",
+      "https://cch18000.github.io/shop/images/img_1789462731747_rgrys1.jpg",
+      "https://cch18000.github.io/shop/images/img_1789462734644_82im2p.jpg",
+      "https://cch18000.github.io/shop/images/img_1789462737522_qp61i8.jpg",
+      "https://cch18000.github.io/shop/images/img_1789462740524_xay1x8.jpg",
+      "https://cch18000.github.io/shop/images/img_1789462743131_xwxm5w.jpg"
+    ],
+    "description": "",
+    "costPrice": 98
   }
 ]
