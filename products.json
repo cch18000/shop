@@ -245,5 +245,27 @@
     ],
     "description": "【三代511背包 6色齐全】 军规600D加密尼龙面料 高48*宽31*厚22cm  每个网兜都是配套的对应颜色 更显专业性",
     "costPrice": 55
+  },
+  {
+    "id": 33,
+    "status": "online",
+    "name": "武前运包",
+    "price": 89,
+    "category": "箱包",
+    "subCategory": "手提包",
+    "sku": "",
+    "images": [
+      "https://cch18000.github.io/shop/images/img_1789462519603_2vvvx2.jpg",
+      "https://cch18000.github.io/shop/images/img_1789462522073_awknxu.jpg",
+      "https://cch18000.github.io/shop/images/img_1789462524788_jsp0rf.jpg",
+      "https://cch18000.github.io/shop/images/img_1789462527256_reokv0.jpg",
+      "https://cch18000.github.io/shop/images/img_1789462530782_9bdy17.jpg",
+      "https://cch18000.github.io/shop/images/img_1789462533669_i9xwfs.jpg",
+      "https://cch18000.github.io/shop/images/img_1789462536607_b168kn.jpg",
+      "https://cch18000.github.io/shop/images/img_1789462539709_9dilyq.jpg",
+      "https://cch18000.github.io/shop/images/img_1789462542746_1mu1dy.jpg"
+    ],
+    "description": "井前运包",
+    "costPrice": 45
   }
 ]
