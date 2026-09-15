@@ -201,5 +201,27 @@
     ],
     "description": "",
     "costPrice": 145
+  },
+  {
+    "id": 31,
+    "status": "online",
+    "name": "生活背囊",
+    "price": 339,
+    "category": "箱包",
+    "subCategory": "双肩包",
+    "sku": "",
+    "images": [
+      "https://cch18000.github.io/shop/images/img_1789461623148_3qx9a2.jpg",
+      "https://cch18000.github.io/shop/images/img_1789461624834_fk0ucz.jpg",
+      "https://cch18000.github.io/shop/images/img_1789461626563_nkfxgh.jpg",
+      "https://cch18000.github.io/shop/images/img_1789461628042_41xv2j.jpg",
+      "https://cch18000.github.io/shop/images/img_1789461629392_x10ho9.jpg",
+      "https://cch18000.github.io/shop/images/img_1789461630783_08qny0.jpg",
+      "https://cch18000.github.io/shop/images/img_1789461653771_c25kj9.jpg",
+      "https://cch18000.github.io/shop/images/img_1789461658859_qcgz5g.jpg",
+      "https://cch18000.github.io/shop/images/img_1789461661169_axbn2p.jpg"
+    ],
+    "description": "不是配版  布料不防红外-用高强度加密尼龙面料，防刮耐磨，防水，性价比高，",
+    "costPrice": 195
   }
 ]
