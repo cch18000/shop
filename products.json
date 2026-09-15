@@ -113,5 +113,27 @@
     ],
     "description": "【0316黑色皮带款手表】机芯采用进口西铁城石英机芯，双按蝴蝶扣制作而成，款式简约，风格脱俗，军旅风木盒包装，附带截表器和拆表工具，送礼自用都很合适🌲",
     "costPrice": 555
+  },
+  {
+    "id": 27,
+    "status": "online",
+    "name": "19作训包",
+    "price": 89,
+    "category": "箱包",
+    "subCategory": "双肩包",
+    "sku": "",
+    "images": [
+      "https://cch18000.github.io/shop/images/img_1789428845436_zrytib.jpg",
+      "https://cch18000.github.io/shop/images/img_1789428849006_v3w5p2.jpg",
+      "https://cch18000.github.io/shop/images/img_1789428851782_m98oy7.jpg",
+      "https://cch18000.github.io/shop/images/img_1789428853789_f88ivp.jpg",
+      "https://cch18000.github.io/shop/images/img_1789428855861_y533em.jpg",
+      "https://cch18000.github.io/shop/images/img_1789428857419_3eqvz4.jpg",
+      "https://cch18000.github.io/shop/images/img_1789428859178_4l2i3d.jpg",
+      "https://cch18000.github.io/shop/images/img_1789428860658_8idw23.jpg",
+      "https://cch18000.github.io/shop/images/img_1789428862385_jqvd5i.jpg"
+    ],
+    "description": "19作训包现货。面料：600D加密。尺寸：约宽30*厚17*高46CM",
+    "costPrice": 45
   }
 ]
