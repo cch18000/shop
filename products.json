@@ -179,5 +179,27 @@
     ],
     "description": "",
     "costPrice": 45
+  },
+  {
+    "id": 30,
+    "status": "online",
+    "name": "【正品】突击包",
+    "price": 269,
+    "category": "箱包",
+    "subCategory": "双肩包",
+    "sku": "",
+    "images": [
+      "https://cch18000.github.io/shop/images/img_1789461394647_seouqi.jpg",
+      "https://cch18000.github.io/shop/images/img_1789461399265_dfdrjx.jpg",
+      "https://cch18000.github.io/shop/images/img_1789461400808_sgdq3y.jpg",
+      "https://cch18000.github.io/shop/images/img_1789461402249_lkopjt.jpg",
+      "https://cch18000.github.io/shop/images/img_1789461403666_1x5gz2.jpg",
+      "https://cch18000.github.io/shop/images/img_1789461405281_6mhwpz.jpg",
+      "https://cch18000.github.io/shop/images/img_1789461407341_nokb6j.jpg",
+      "https://cch18000.github.io/shop/images/img_1789461408977_zn02vj.jpg",
+      "https://cch18000.github.io/shop/images/img_1789461410436_huuv7y.jpg"
+    ],
+    "description": "",
+    "costPrice": 145
   }
 ]
